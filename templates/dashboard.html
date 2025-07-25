@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EV Battery Heatmap Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f0f0f;
+            color: #f2f2f2;
+            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ff88;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .alerts {
+            background-color: #1f1f1f;
+            border-left: 5px solid #ffa502;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+        }
+
+        .alert-safe {
+            background-color: #1f3f1f;
+            border-left: 5px solid #28a745;
+        }
+
+        .alert-line {
+            margin-bottom: 0.6rem;
+            font-size: 1rem;
+        }
+
+        .heatmap-section {
+            margin-top: 3rem;
+        }
+
+        .heatmap-img {
+            width: 100%;
+            border-radius: 10px;
+            margin: 1rem 0;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .heatmap-img:hover {
+            transform: scale(1.07);
+        }
+
+        h2 {
+            color: #00bfff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #00bfff;
+            padding-bottom: 0.5rem;
+        }
+
+        p {
+            color: #ccc;
+        }
+
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .heatmap-wrapper {
+        margin-bottom: 2.5rem;
+        text-align: center;
+        }
+
+        .image-caption {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+            color: #00ffaa;
+            background-color: #1a1a1a;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 6px rgba(0, 255, 170, 0.3);
+            }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EV Battery Heatmap Dashboard</h1>
+
+        {% if alerts %}
+            <div class="alerts">
+                {% for alert in alerts %}
+                    <div class="alert-line">🚨 {{ alert }}</div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alerts alert-safe">
+                ✅ All zones are within safe temperature limits.
+            </div>
+        {% endif %}
+
+        <div class="heatmap-section">
+            <h2>Temperature Heatmaps</h2>
+            {% if images %}
+                {% for image in images %}
+                    <div class="heatmap-wrapper">
+                        <img src="{{ url_for('static', filename=image) }}" alt="Heatmap" class="heatmap-img">
+                         <div class="image-caption">{{ image.split('/')[-1].rsplit('.',1)[0] }}</div>
+                    </div>
+
+                {% endfor %}
+            {% else %}
+                <p>No heatmap images available.</p>
+            {% endif %}
+        </div>
+
+        <div class="footer">
+            &copy; 2025 EV Thermal Optimizer | Developed by Sanidhiya Gupta 🚗⚡
+        </div>
+    </div>
+</body>
+</html>
